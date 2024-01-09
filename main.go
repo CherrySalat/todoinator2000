@@ -31,14 +31,9 @@ var Tasks = []Task{
 	},
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
-}
-
 func handleRequests() {
 	m := mux.NewRouter().StrictSlash(true)
-	m.HandleFunc("/", homePage)
+	m.Handle("/", http.FileServer(http.Dir("./static")))
 	m.HandleFunc("/tasks", returnAllTasks)
 	m.HandleFunc("/task", createNewTask).Methods("POST")
 	m.HandleFunc("/task/{id:[0-9]+}", deleteTask).Methods("DELETE")
